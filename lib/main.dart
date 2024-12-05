@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quikmath/pages/home.dart';
+import 'package:quikmath/widgets/pages/about.dart';
+import 'package:quikmath/widgets/pages/home.dart';
+import 'package:quikmath/widgets/pages/preferences.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,11 +13,12 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        //'/second': (context) => const SecondScreen(),
+        '/preferences': (context) => const PreferencesPage(),
+        '/about': (context) => const AboutPage(),
       },
     );
   }
