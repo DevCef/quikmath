@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:quikmath/logic/core.dart';
 
 class MathScreen extends StatefulWidget {
   const MathScreen({super.key});
@@ -10,50 +11,11 @@ class MathScreen extends StatefulWidget {
 }
 
 class _MathScreenState extends State<MathScreen> {
-  bool _selected = false;
-
-  Timer? _timer; // Timer instance
-  int _milliseconds = 0; // Elapsed time in milliseconds
-  bool _isRunning = false; // Control timer state
-
-  // Start the timer
-  void _setTimerState(bool shouldRun) {
-    if (_isRunning == shouldRun) return; // Avoid unnecessary updates
-
-    setState(() {
-      _isRunning = shouldRun;
-    });
-
-    if (_isRunning) {
-      // Start or resume the timer
-      _timer = Timer.periodic(Duration(milliseconds: 1), (timer) {
-        setState(() {
-          _milliseconds += 1;
-        });
-      });
-    } else {
-      // Pause the timer
-      _timer?.cancel();
-    }
-  }
-
-  // Reset the timer
-  void _resetTimer() {
-    setState(() {
-      _isRunning = false;
-      _milliseconds = 0;
-    });
-    _timer?.cancel();
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel(); // Cancel timer when widget is disposed
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
+    QuikCore.mathscreenStateFunc = setState;
+
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(16),
@@ -67,7 +29,7 @@ class _MathScreenState extends State<MathScreen> {
               // o) Timer
               Center(
                 child: Text(
-                  "${(_milliseconds / 100).toStringAsFixed(2)}s",
+                  "${(QuikCore.timerMilliseconds / 100).toStringAsFixed(2)}s",
                   style: TextStyle(fontSize: 24),
                 ),
               ),
@@ -111,8 +73,11 @@ class _MathScreenState extends State<MathScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () => setState(() {
-                          _selected = !_selected;
-                          _setTimerState(_selected);
+                          if (QuikCore.isRunning) {
+                            QuikCore.doBreak();
+                          } else {
+                            QuikCore.doStart();
+                          }
                         }),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 100),
@@ -121,7 +86,7 @@ class _MathScreenState extends State<MathScreen> {
                           margin: const EdgeInsets.all(32),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24),
-                            color: _selected ? Colors.white : Colors.red[100],
+                            color: QuikCore.isRunning ? Colors.white : Colors.red[100],
                           ),
                           child: Center(
                             child: AnimatedDefaultTextStyle(
@@ -133,7 +98,7 @@ class _MathScreenState extends State<MathScreen> {
                                     TextSpan(
                                       text: "3",
                                       style: TextStyle(
-                                        color: _selected
+                                        color: QuikCore.isRunning
                                             ? Colors.black
                                             : Colors.red,
                                         fontSize: 48,
@@ -143,7 +108,7 @@ class _MathScreenState extends State<MathScreen> {
                                     TextSpan(
                                       text: "_",
                                       style: TextStyle(
-                                        color: _selected
+                                        color: QuikCore.isRunning
                                             ? Colors.black
                                             : Colors.red,
                                         fontSize: 48,

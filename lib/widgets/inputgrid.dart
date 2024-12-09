@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'package:vibration/vibration.dart';
 import 'package:flutter/material.dart';
 
 class InputGrid extends StatelessWidget {
@@ -65,9 +65,17 @@ class InputGrid extends StatelessWidget {
                   foregroundColor:
                       Color.lerp(Colors.purple[400], Colors.black, 0.5),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   // Handle button press
                   print(index);
+                  Vibration.vibrate(
+                    duration: 200,
+                  );
+                  bool? response = await Vibration.hasVibrator();
+                  if (response == true)
+                    print("vibrated");
+                  else
+                    print("no vibration support");
                 },
                 child: Text(
                   _getButtonText(index),
