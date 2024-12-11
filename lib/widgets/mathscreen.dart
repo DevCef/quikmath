@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:quikmath/logic/core.dart';
 
@@ -11,10 +12,11 @@ class MathScreen extends StatefulWidget {
 }
 
 class _MathScreenState extends State<MathScreen> {
-
   @override
   Widget build(BuildContext context) {
     QuikCore.mathscreenStateFunc = setState;
+    // TODO : Temp
+    QuikCore.doStart();
 
     return Container(
       width: double.infinity,
@@ -35,95 +37,34 @@ class _MathScreenState extends State<MathScreen> {
               ),
               // o) Equation both question & answer
               Expanded(
-                child: Row(
-                  children: [
-                    // o) Question
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        margin: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          //color: Colors.purple[200],
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        child: Text(
-                          "1 + 2",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.purple[500],
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      child: Text(
-                        "=",
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: AutoSizeText.rich(
+                      TextSpan(
                         style: TextStyle(
-                          color: Colors.black.withAlpha(64),
-                          fontSize: 48,
+                          fontFamily: "Jetbrains",
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
-                      ),
-                    ),
-
-                    // o) Answer
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => setState(() {
-                          if (QuikCore.isRunning) {
-                            QuikCore.doBreak();
-                          } else {
-                            QuikCore.doStart();
-                          }
-                        }),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.linear,
-                          height: 128,
-                          margin: const EdgeInsets.all(32),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            color: QuikCore.isRunning ? Colors.white : Colors.red[100],
+                        children: [
+                          TextSpan(
+                            text: "4x3",
                           ),
-                          child: Center(
-                            child: AnimatedDefaultTextStyle(
-                              duration: const Duration(milliseconds: 300),
-                              style: TextStyle(),
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: "3",
-                                      style: TextStyle(
-                                        color: QuikCore.isRunning
-                                            ? Colors.black
-                                            : Colors.red,
-                                        fontSize: 48,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: "_",
-                                      style: TextStyle(
-                                        color: QuikCore.isRunning
-                                            ? Colors.black
-                                            : Colors.red,
-                                        fontSize: 48,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
+                          TextSpan(
+                            text: "=",
+                            style: TextStyle(color: Colors.grey[700]),
                           ),
-                        ),
+                          TextSpan(
+                            text: QuikCore.answer,
+                            style: TextStyle(color: Colors.purple[700]),
+                          ),
+                        ],
                       ),
+                      presetFontSizes: [48, 32, 24,  ],
+                      maxLines: 1,
                     ),
-                  ],
+                  ),
                 ),
               )
             ],

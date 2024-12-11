@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:quikmath/logic/core.dart';
 import 'package:quikmath/widgets/homeScaffold.dart';
-import 'package:quikmath/widgets/inputgrid.dart';
-import 'package:quikmath/widgets/mathscreen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,7 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _pop = false;
-  DateTime? _lastPressed = null;
+  DateTime? _lastPressed;
 
   @override
   Widget build(BuildContext context) {
